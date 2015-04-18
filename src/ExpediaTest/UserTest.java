@@ -98,8 +98,19 @@ public class UserTest
 		Flight flight = new Flight(StartDate, EndDate, 10000);
 		target.bookWithDoubleMiles(new Booking[]{flight});
 		Assert.assertEquals(5000, target.bonusFrequentFlierMiles, 0.01);
+		Flight flight2 = new Flight(StartDate, EndDate, 700);
+		target.bookWithDoubleMiles(new Booking[]{flight2});
+		Assert.assertEquals(700+5000, target.bonusFrequentFlierMiles, 0.01);
 	}
-
+	
+	@Test
+	public void TestThatDiscountInitializes()
+	{
+		Discount target = new Discount(0.01, 1);
+		ServiceLocator.Instance().AddDiscount(target);
+		this.target.book(new Booking[]{new Flight(StartDate, EndDate, 100), new Hotel(5), new Car(3)});
+		assertEquals(1024.65,this.target.Price(), 0.01);
+	}
 	
 	@After
 	public void TearDown()
