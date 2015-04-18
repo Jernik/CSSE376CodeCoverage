@@ -3,6 +3,8 @@ package ExpediaTest;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.crypto.AEADBadTagException;
+
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -87,30 +89,35 @@ public class HotelTest
         //mocks.VerifyAll();
         EasyMock.verify(mockDB);
     }
-//    @Test
-//    public void TestThatHotelDoesGetRoomCountFromDatabase()
-//    {
-//    	IDatabase mockDB = EasyMock.createStrictMock(IDatabase.class);
-//        List<String> Rooms = new LinkedList<String>();
-//        for (int i = 0; i < 100; i++)
-//        {
-//            Rooms.add(i);
-//        }
-//
-//        // FIXME: what is the EasyMock equivalent, if any?
-//        //EasyMock.expect(mockDB.Rooms).PropertyBehavior();
-//
-//        EasyMock.replay(mockDB);
-//
-//        mockDB.Rooms = Rooms;
-//
-//
-//        var target = new Hotel(10);
-//        target.Database = mockDatabase;
-//
-//        int roomCount = target.AvailableRooms;
-//        Assert.AreEqual(Rooms.Count, roomCount);
-//
-//        mocks.VerifyAll();
-//    }
+    @Test
+    public void TestThatHotelDoesGetRoomCountFromDatabase()
+    {
+    	IDatabase mockDB = EasyMock.createStrictMock(IDatabase.class);
+        List<String> Rooms = new LinkedList<String>();
+        for (int i = 0; i < 100; i++)
+        {
+            Rooms.add("");
+        }
+
+        // FIXME: what is the EasyMock equivalent, if any?
+      // EasyMock.expect(mockDB.Rooms).andReturn(Rooms);
+       EasyMock.replay(mockDB);
+
+        mockDB.Rooms = Rooms;
+
+
+        Hotel target = new Hotel(10);
+        target.Database = mockDB;
+
+        int roomCount = target.AvailableRooms();
+        Assert.assertEquals(Rooms.size(), roomCount);
+
+        EasyMock.verify();
+    }
+    @Test
+    public void TestHotelMiles(){
+    	//should always be 0
+    	Hotel target = new Hotel(5);
+    	Assert.assertEquals(0, target.getMiles());
+    }
 }
